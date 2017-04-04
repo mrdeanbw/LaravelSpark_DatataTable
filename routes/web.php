@@ -14,3 +14,14 @@
 Route::get('/', 'WelcomeController@show');
 
 Route::get('/home', 'HomeController@show');
+
+// Route::controller('datatables', 'DatatablesController',[
+//     'anydata'    => 'datatables.data',
+//     'getIndex'   => 'datatables',
+// ]);
+ Route::get('datatables',        'DatatablesController@getIndex');
+ Route::get('datatables/data',   'DatatablesController@anydata');
+ 
+ Route::get('data-response', 'DatatablesController@dataResponse');
+ Route::post('data-response', 'DatatablesController@dataResponse');
+

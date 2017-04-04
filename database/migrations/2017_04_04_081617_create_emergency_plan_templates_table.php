@@ -1,11 +1,10 @@
 <?php
 
-//use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-//class EmergencyPlanTemplateMigration extends Migration   CreateEmergencyPlanTemplatesTable
-class CreateEmergencyPlanTemplateMigratioinTable extends Migration
+class CreateEmergencyPlanTemplatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -44,6 +43,6 @@ class CreateEmergencyPlanTemplateMigratioinTable extends Migration
      */
     public function down()
     {
-        Schema::drop('emergency_plan_templates');
+        Schema::dropIfExists('emergency_plan_templates');
     }
 }

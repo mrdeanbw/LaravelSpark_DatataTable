@@ -19,7 +19,7 @@
     <link href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/select/1.2.1/css/select.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/rowreorder/1.2.0/css/rowReorder.dataTables.min.css" rel="stylesheet">
-    <link href="https://editor.datatables.net/extensions/Editor/css/editor.dataTables.min.css" rel="stylesheet">
+    <link href="/css/DatatableCSS/editor.dataTables.min.css" rel="stylesheet">
 
     <!-- Scripts -->
     @yield('scripts', '')
@@ -61,58 +61,85 @@
     <script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
     <script src="https://cdn.datatables.net/rowreorder/1.2.0/js/dataTables.rowReorder.min.js"></script>
-    <script src="https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min.js"></script>
+    <script src="/js/DatatableJS/dataTables.editor.js"></script>
 
 
     <script>
         var editor; // use a global for the submit and return data rendering in the examples
-        
+        console.log("ready document1");
         $(document).ready(function() {
+            console.log("ready document!");
             editor = new $.fn.dataTable.Editor( {
-                ajax:  '../php/sequence.php',
+                //ajax:  '../php/sequence.php',
+            ajax: {
+                url: 'data-response',
+                headers: {
+                   //  {{ csrf_field() }}
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            },
                 table: '#example',
-                fields: [ {
-                        label: 'Order:',
-                        name: 'readingOrder',
-                        multiEditable: false
-                    }, {
+                idSrc:  'display_sequence',
+                fields: [ 
+                    // {
+                    //     label: 'Order:',
+                    //     name: 'facility_id',
+                    //     multiEditable: false
+                    // }, 
+                    {
                         label: 'Template Name:',
-                        name:  'Template Name'
+                        name:  'name'
                     }, {
                         label: 'Description:',
-                        name:  'Description'
+                        name:  'description'
                     }, {
-                        label: 'User Editable:',
-                        name:  'User Editable'
+                        label: 'Display Sequence',
+                        name:  'display_sequence'
                     }, {
                         label: 'Required:',
-                        name:  'Required'
-                    }, {
+                        name:  'required'
+                    }, 
+                    {
+                        label: 'User Editable',
+                        name:  'user_editable'
+                    },
+                    {
                         label: 'Type:',
-                        name:  'Type'
+                        name:  'type'
                     },
                 ]
             } );
         
             var table = $('#example').DataTable( {
                 dom: 'Bfrtip',
-                ajax: '../php/sequence.php',
+                //ajax: '../php/sequence.php',
+                ajax: '/datatables/data',
                 columns: [
-                    { data: 'readingOrder', className: 'reorder' },
-                    { data: 'Template Name' },
-                    { data: 'Description' },
-                    { data: 'User Editable' },
-                    { data: 'Required' },
-                    { data: 'Type' }
-                  
+                    // { data: 'facility_id', className: 'reorder' },
+                    { data: 'name' },
+                    { data: 'description' },
+                    { data: 'display_sequence' },
+                    { data: 'user_editable' },
+                    { data: 'required' },
+                    { data: 'type' }                          
                 ],
+                    
+                // columns: [
+                //     { "data" : "facility_id",   name : 'facility_id' },
+                //     { "data": "name",           name : 'name' }, 
+                //     { "data": "description" ,    name : 'description' },
+                //     { "data": "display_sequence", name : 'display_sequence' },
+                //     { "data": "required" ,      name : 'required' },
+                //     { "data": "type" ,          name : 'type' }
+                // ],
+
                 columnDefs: [
                     { orderable: false, targets: [ 1,2,3 ] }
                 ],
-                rowReorder: {
-                    dataSrc: 'readingOrder',
-                    editor:  editor
-                },
+                // rowReorder: {
+                //     dataSrc: 'readingOrder',
+                //     editor:  editor
+                // },
                 select: true,
                 buttons: [
                     { extend: 'create', editor: editor },
@@ -129,11 +156,11 @@
                 } )
                 .on( 'initCreate', function () {
                     // Enable order for create
-                    editor.field( 'readingOrder' ).enable();
+                    //editor.field( 'readingOrder' ).enable();
                 } )
                 .on( 'initEdit', function () {
                     // Disable for edit (re-ordering is performed by click and drag)
-                    editor.field( 'readingOrder' ).disable();
+                    //editor.field( 'readingOrder' ).disable();
                 } );
         } );
     
